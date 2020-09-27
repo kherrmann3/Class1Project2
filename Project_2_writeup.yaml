@@ -80,4 +80,4 @@
           PATH: "{{ ansible_env.PATH}}:/usr/local/bin:/usr/bin"
 
 
-      7: build MEAN stack docker image
+    #   7: build MEAN stack docker image
