@@ -27,7 +27,7 @@
     
     # 1a: Prep nodejs prereqs:
     - name: Run nodesource setup
-      shell: "bash <('curl -sL https://deb.nodesource.com/setup_10.x')"
+      shell: curl -sL https://deb.nodesource.com/setup_10.x | bash -
       tags:
         - nodesource
 
