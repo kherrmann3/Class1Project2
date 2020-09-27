@@ -27,7 +27,7 @@
     
     # 1a: Prep nodejs prereqs:
     - name: Run nodesource setup
-      shell: "curl -sL https://deb.nodesource.com/setup_10.x | bash -"
+      shell: bash <(curl -sL https://deb.nodesource.com/setup_10.x)
 
       # 2: add dockers official GPG key:
     - name: Install GPG key for docker apt repos
