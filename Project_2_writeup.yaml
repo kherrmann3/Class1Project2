@@ -1,0 +1,83 @@
+##########################################
+# TESTED WITH FOLLOWING PARAMETERS:
+#     OS: Ubuntu 16.04 xenial
+#     Jenkins: 2.235.5
+#     Java: OpenJDK 1.8.0_265
+#
+#     ASSUMPTIONS:
+#
+##########################################
+- name: Angular app setup playbook
+  gather_facts: false
+  hosts: all
+  tasks:
+    
+    # 1: Install docker pre-reqs (https://docs.docker.com/engine/install/ubuntu/):
+    - name: install https pre-reqs using apt
+      apt:
+        name: {{ item }}
+        update_cache: yes
+      with_items:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - gnupg-agent
+        - software-properties-common
+    
+    # 1a: Prep nodejs prereqs:
+    - name: Run nodesource setup
+      shell: "curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -"
+
+      # 2: add dockers official GPG key:
+    - name: Install GPG key for docker and Jenkins apt repos
+      apt_key:
+        url: {{ item }}
+        state: present
+      with_items:
+        - https://download.docker.com/linux/ubuntu/gpg
+    
+      # 3: add docker apt repo:
+    - name: Install docker apt repo
+      apt_repository:
+        repo: {{ item }}
+        state: present
+      with_items:
+        - deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable
+    
+      # 4: install docker engine binaries:
+    - name: Install docker packages and Nodejs using apt
+      apt:
+        name: {{ item }}
+        update_cache: yes
+      with_items:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+        - nodejs
+  
+    # 5: enable and start Docker engine    
+    - name: Enable and start Docker engine services
+      systemd:
+        name: {{ item }}
+        state: started
+        enabled: yes
+      with_items:
+        - docker-ce
+
+    # 6: prep node application
+    - name: Run npm install
+      shell: 
+        cmd: "npm install -g @angular/cli"
+        chdir: /tmp
+      environment:
+          PATH: "{{ ansible_env.PATH}}:/usr/local/bin:/usr/bin/"
+      
+    - name: create new angular application
+      shell: 
+        cmd: "ng new myAng-app"
+        chdir: /tmp
+      environment:
+          PATH: "{{ ansible_env.PATH}}:/usr/local/bin:/usr/bin"
+
+
+      7: build MEAN stack docker image
