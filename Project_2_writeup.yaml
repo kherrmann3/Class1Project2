@@ -72,6 +72,7 @@
       shell: 
         cmd: "ng new myAng-app"
         chdir: /tmp
+        creates: /tmp/myAng-app/angular.json
       environment:
         PATH: "{{ ansible_env.PATH}}:/usr/local/bin:/usr/bin"
 
@@ -82,4 +83,15 @@
       tags:
         - dockerfile
 
-    #   7: build MEAN stack docker image
+    - name: Build angular app
+      shell:
+        cmd: "docker build -t myangularapp ."
+        chdir: /tmp/myAng-app
+      environment:
+        PATH: "{{ ansible_env.PATH}}:/usr/local/bin:/usr/bin"
+
+    - name: Run docker image
+      shell:
+        cmd: "docker run -d -p 4200:4200 myangularapp"
+      environment:
+        PATH: "{{ ansible_env.PATH}}:/usr/local/bin:/usr/bin"
