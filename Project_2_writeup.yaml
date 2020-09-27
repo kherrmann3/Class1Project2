@@ -77,8 +77,9 @@
 
     - name: copy Dockerfile to working directory
       copy:
-        src: ./Dockerfile
-        dest: /tmp/Dockerfile
+        src: Dockerfile
+        dest: /tmp/myAng-app/Dockerfile
       tags:
         - dockerfile
+
     #   7: build MEAN stack docker image
