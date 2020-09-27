@@ -15,7 +15,7 @@
     # 1: Install docker pre-reqs (https://docs.docker.com/engine/install/ubuntu/):
     - name: install https pre-reqs using apt
       apt:
-        name: {{ item }}
+        name: "{{ item }}"
         update_cache: yes
       with_items:
         - apt-transport-https
@@ -31,7 +31,7 @@
       # 2: add dockers official GPG key:
     - name: Install GPG key for docker and Jenkins apt repos
       apt_key:
-        url: {{ item }}
+        url: "{{ item }}"
         state: present
       with_items:
         - https://download.docker.com/linux/ubuntu/gpg
@@ -39,7 +39,7 @@
       # 3: add docker apt repo:
     - name: Install docker apt repo
       apt_repository:
-        repo: {{ item }}
+        repo: "{{ item }}"
         state: present
       with_items:
         - deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable
@@ -47,7 +47,7 @@
       # 4: install docker engine binaries:
     - name: Install docker packages and Nodejs using apt
       apt:
-        name: {{ item }}
+        name: "{{ item }}"
         update_cache: yes
       with_items:
         - docker-ce
@@ -58,7 +58,7 @@
     # 5: enable and start Docker engine    
     - name: Enable and start Docker engine services
       systemd:
-        name: {{ item }}
+        name: "{{ item }}"
         state: started
         enabled: yes
       with_items:
