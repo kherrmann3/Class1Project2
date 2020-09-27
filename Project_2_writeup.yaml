@@ -50,6 +50,8 @@
       apt:
         name: ['docker-ce', 'docker-ce-cli', 'containerd.io', 'nodejs']
         update_cache: yes
+      tags:
+        - apt_packages
   
     # 5: enable and start Docker engine    
     - name: Enable and start Docker engine services
