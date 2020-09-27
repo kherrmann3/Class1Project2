@@ -30,12 +30,10 @@
       shell: "curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -"
 
       # 2: add dockers official GPG key:
-    - name: Install GPG key for docker and Jenkins apt repos
+    - name: Install GPG key for docker apt repos
       apt_key:
-        url: "{{ item }}"
+        url: https://download.docker.com/linux/ubuntu/gpg
         state: present
-      with_items:
-        - https://download.docker.com/linux/ubuntu/gpg
     
       # 3: add docker apt repo:
     - name: Install docker apt repo
@@ -43,7 +41,7 @@
         repo: "{{ item }}"
         state: present
       with_items:
-        - deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable
+        - deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
     
       # 4: install docker engine binaries:
     - name: Install docker packages and Nodejs using apt
