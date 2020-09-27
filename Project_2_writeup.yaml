@@ -52,11 +52,9 @@
     # 5: enable and start Docker engine    
     - name: Enable and start Docker engine services
       systemd:
-        name: "{{ item }}"
+        name: docker
         state: started
         enabled: yes
-      with_items:
-        - docker-ce
 
     # 6: prep node application
     - name: Run npm install
