@@ -27,7 +27,7 @@
     
     # 1a: Prep nodejs prereqs:
     - name: Run nodesource setup
-      shell: "curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -"
+      shell: "curl -sL https://deb.nodesource.com/setup_10.x | bash -"
 
       # 2: add dockers official GPG key:
     - name: Install GPG key for docker apt repos
@@ -62,14 +62,14 @@
         cmd: "npm install -g @angular/cli"
         chdir: /tmp
       environment:
-          PATH: "{{ ansible_env.PATH}}:/usr/local/bin:/usr/bin/"
+        PATH: "{{ ansible_env.PATH}}:/usr/local/bin:/usr/bin/"
       
     - name: create new angular application
       shell: 
         cmd: "ng new myAng-app"
         chdir: /tmp
       environment:
-          PATH: "{{ ansible_env.PATH}}:/usr/local/bin:/usr/bin"
+        PATH: "{{ ansible_env.PATH}}:/usr/local/bin:/usr/bin"
 
 
     #   7: build MEAN stack docker image
