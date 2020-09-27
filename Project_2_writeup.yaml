@@ -47,13 +47,8 @@
       # 4: install docker engine binaries:
     - name: Install docker packages and Nodejs using apt
       apt:
-        name: "{{ item }}"
+        name: ['docker-ce', 'docker-ce-cli', 'containerd.io', 'nodejs']
         update_cache: yes
-      with_items:
-        - docker-ce
-        - docker-ce-cli
-        - containerd.io
-        - nodejs
   
     # 5: enable and start Docker engine    
     - name: Enable and start Docker engine services
