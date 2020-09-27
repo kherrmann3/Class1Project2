@@ -10,6 +10,7 @@
 - name: Angular app setup playbook
   gather_facts: false
   hosts: all
+  become: true
   tasks:
     
     # 1: Install docker pre-reqs (https://docs.docker.com/engine/install/ubuntu/):
