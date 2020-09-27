@@ -75,5 +75,10 @@
       environment:
         PATH: "{{ ansible_env.PATH}}:/usr/local/bin:/usr/bin"
 
-
+    - name: copy Dockerfile to working directory
+      copy:
+        src: ./Dockerfile
+        dest: /tmp/Dockerfile
+      tags:
+        - dockerfile
     #   7: build MEAN stack docker image
