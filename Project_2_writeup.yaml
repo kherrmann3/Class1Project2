@@ -13,7 +13,7 @@
   hosts: all
   become: true
   tasks:
-    
+
     # 1: Install docker pre-reqs (https://docs.docker.com/engine/install/ubuntu/):
     - name: install https pre-reqs using apt
       apt:
@@ -25,7 +25,7 @@
         - curl
         - gnupg-agent
         - software-properties-common
-    
+
     # 1a: Prep nodejs prereqs:
     - name: Run nodesource setup
       shell: curl -sL https://deb.nodesource.com/setup_10.x | bash -
@@ -37,7 +37,7 @@
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present
-    
+
       # 3: add docker apt repo:
     - name: Install docker apt repo
       apt_repository:
@@ -45,7 +45,7 @@
         state: present
       with_items:
         - deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
-    
+
       # 4: install docker engine binaries:
     - name: Install docker packages and Nodejs using apt
       apt:
@@ -53,8 +53,8 @@
         update_cache: yes
       tags:
         - apt_packages
-  
-    # 5: enable and start Docker engine    
+
+    # 5: enable and start Docker engine
     - name: Enable and start Docker engine services
       systemd:
         name: docker
@@ -63,14 +63,14 @@
 
     # 6: prep node application
     - name: Run npm install
-      shell: 
+      shell:
         cmd: "npm install -g @angular/cli"
         chdir: /tmp
       environment:
         PATH: "{{ ansible_env.PATH}}:/usr/local/bin:/usr/bin/"
-      
+
     - name: create new angular application
-      shell: 
+      shell:
         cmd: "ng new myAng-app"
         chdir: /tmp
         creates: /tmp/myAng-app/angular.json
@@ -96,25 +96,3 @@
         cmd: "docker run -d -p 4200:4200 myangularapp"
       environment:
         PATH: "{{ ansible_env.PATH}}:/usr/local/bin:/usr/bin"
----
-#Dockerfile Source Code
-# base image
-FROM node:12
-
-# set working directory
-RUN mkdir /usr/src/app
-WORKDIR /usr/src/app
-
-# add `/usr/src/app/node_modules/.bin` to $PATH
-ENV PATH /usr/src/app/node_modules/.bin:$PATH
-
-# install and cache app dependencies
-COPY package.json /usr/src/app/package.json
-RUN npm install
-RUN npm install -g @angular/cli@1.7.1
-
-# add app
-COPY . /usr/src/app
-
-# start app
-CMD ng serve --host 0.0.0.0
